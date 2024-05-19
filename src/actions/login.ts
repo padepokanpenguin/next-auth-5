@@ -11,7 +11,7 @@ import { loginSchema } from "@/schemas";
 import { AuthError } from "next-auth";
 import * as z from "zod";
 
-export async function login(values: z.infer<typeof loginSchema>) {
+export async function login(values: z.infer<typeof loginSchema>, callbackUrl?: string | null) {
     const validateFields = loginSchema.safeParse(values)
 
     if (!validateFields) {
@@ -68,7 +68,7 @@ export async function login(values: z.infer<typeof loginSchema>) {
         await signIn("credentials", {
             email,
             password,
-            redirectTo: DEFAULT_LOGIN_REDIRECT
+            redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT
         })
 
 
